@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Glassmorphism Card — Moving Gradient Background</title>
+  <style>
+    /* Reset + sensible defaults */
+    * { box-sizing: border-box; }
+    html,body { height:100%; margin:0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+
+    
+    .bg {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      z-index: -2;
+      background: linear-gradient(120deg, rgba(255,150,140,0.15), rgba(135,200,255,0.15));
+    }
+
+    
+    .bg::before {
+      content: "";
+      position: absolute;
+      inset: -25%; /* make big so animation looks smooth */
+      background: conic-gradient(from 0deg at 50% 50%, #ff7a7a, #ffd36b, #7ae7ff, #a9ff9b, #ff7a7a);
+      filter: blur(60px) saturate(120%);
+      opacity: 0.85;
+      transform: scale(1.2);
+      animation: spinGradient 18s linear infinite;
+      will-change: transform, filter;
+    }
+
+   
+    .bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 20px 20px;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+
+    @keyframes spinGradient {
+      0% { transform: rotate(0deg) scale(1.2); }
+      50% { transform: rotate(180deg) scale(1.05); }
+      100% { transform: rotate(360deg) scale(1.2); }
+    }
+
+  
+    .wrap {
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:3rem;
+    }
+
+  
+    .card {
+      width: 360px;
+      max-width: calc(100% - 48px);
+      padding: 2rem;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+      box-shadow: 0 10px 30px rgba(10,10,20,0.25), inset 0 1px 0 rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.16);
+      backdrop-filter: blur(12px) saturate(120%);
+      -webkit-backdrop-filter: blur(12px) saturate(120%);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      transition: transform .35s cubic-bezier(.2,.9,.25,1), box-shadow .35s;
+    }
+
+    .card:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 20px 50px rgba(10,10,30,0.35); }
+
+    /* Decorative highlight lines */
+    .card::before {
+      content: "";
+      position: absolute;
+      left: -40%;
+      top: -40%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0));
+      transform: rotate(25deg);
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+  
+    .avatar {
+      width:64px;
+      height:64px;
+      border-radius:14px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06));
+      display:inline-grid; place-items:center; font-weight:700; font-size:20px;
+      color: rgba(0,0,0,0.7);
+      margin-bottom: 12px;
+      backdrop-filter: blur(4px);
+    }
+
+    h1 { margin:0 0 8px 0; font-size:18px; letter-spacing:0.2px; }
+    p { margin:0 0 18px 0; font-size:13px; opacity:0.95; color: rgba(255,255,255,0.92); }
+
+    .actions { display:flex; gap:10px; }
+    .btn {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: inherit;
+      text-decoration:none;
+      font-size:13px;
+      display:inline-flex; align-items:center; gap:8px;
+      cursor:pointer;
+      transition: background .2s, transform .15s;
+    }
+    .btn:active { transform: translateY(1px); }
+
+   
+    .pill {
+      margin-left:auto;
+      font-size:12px;
+      padding:6px 10px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border-radius:999px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* Responsive tweaks */
+    @media (max-width:420px) {
+      .card { padding:1.25rem; border-radius:14px; }
+      .avatar { width:56px; height:56px; }
+    }
+
+  
+    @media (prefers-reduced-motion: reduce) {
+      .bg::before { animation: none; }
+      .card { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+
+  <main class="wrap">
+    <article class="card" role="region" aria-label="Profile card">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="avatar">KR</div>
+        <div style="min-width:0">
+          <h1>Kelsi Rawat</h1>
+          <p style="font-size:12px; margin-bottom:0.25rem; opacity:0.9">priyanshu • kelsi card</p>
+        </div>
+      </div>
+
+      <p>
+        Kelsi is a beautiful girl from philipines married with a young boy named priyanshu.
+      </p>
+
+      <div style="display:flex; align-items:center; gap:10px">
+        <a class="btn" href="#">Message</a>
+        <a class="btn" href="#">Follow</a>
+        <div class="pill">Online</div>
+      </div>
+    </article>
+  </main>
+</body>
+</html>
